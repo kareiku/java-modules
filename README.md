@@ -1,2 +1,2 @@
 # Java Modules
-Modules containing little but useful class' packages for reusability purposes.
+Modules containing little but useful classes' packages for reusability purposes.
