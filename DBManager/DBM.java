@@ -5,7 +5,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DOM implements IDOM {
+public abstract class DBM implements IDBM {
     protected abstract Connection getConnection() throws SQLException;
 
     @Override

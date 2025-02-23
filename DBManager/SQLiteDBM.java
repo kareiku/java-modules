@@ -3,11 +3,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class SQLiteDOM extends DOM {
+public class SQLiteDBM extends DBM {
     private static final String JDBC_SQLITE = "jdbc:sqlite:";
     private final String dbName;
 
-    public SQLiteDOM(String dbName) {
+    public SQLiteDBM(String dbName) {
         this.dbName = dbName;
     }
 
