@@ -1,24 +1,24 @@
-let entries = null;
+let data = null;
 
-/*
+/**
  * Loads the data in a JSON file, represented by an array of objects containing
  * key-value pairs, into memory.
  *
  * @NotNull path: a string representation of the relative path to the JSON data
  *                file.
- * @Nullable callback: a function that takes no parameters and returns nothing.
- *                     Defined mainly to allow for synchronous table loading.
+ * @Nullable initializeTable: a function that takes no parameters and returns nothing.
+ *                            Loads the initial state of the table.
  */
-async function loadTable(path, callback) {
-    fetch(path).then(response => response.json()).then(data => {
-        entries = data;
-        if (callback instanceof Function) {
-            callback();
+async function loadTable(path, initializeTable) {
+    fetch(path).then(response => response.json()).then(pulledData => {
+        data = pulledData;
+        if (initializeTable instanceof Function) {
+            initializeTable();
         }
     }).catch(error => console.error(error));
 }
 
-/*
+/**
  * Writes the saved-in-memory data into the table specified in the parameter.
  * Keys represent the header and objects are shown on a row each.
  * Note that this is the default way of writting a table. There's no limitation
@@ -31,7 +31,7 @@ async function loadTable(path, callback) {
  */
 function writeTable(filter, tableId) {
     const table = document.getElementById(tableId);
-    const data = filter instanceof Function ? filter(entries) : entries;
+    const filteredData = filter instanceof Function ? filter(data) : data;
     const keys = data.length > 0 ? Object.keys(data[0]) : [];
     table.innerHTML = "";
     const header = document.createElement("tr");
@@ -41,7 +41,7 @@ function writeTable(filter, tableId) {
         header.appendChild(th);
     });
     table.append(header);
-    data.forEach(datum => {
+    filteredData.forEach(datum => {
         const row = table.insertRow();
         keys.forEach(key => {
             const cell = row.insertCell();
@@ -50,10 +50,12 @@ function writeTable(filter, tableId) {
     });
 }
 
-/*
- * Retrieves a deep copy of the entries loaded in memory.
+/**
+ * Retrieves a deep copy of the data loaded in memory. Id est, it's safe to be
+ * modified.
+ * Safe under modifications over the data retrieved.
  * For usage in custom functions.
  */
-function retrieveEntries() {
-    return structuredClone(entries);
+function retrieveData() {
+    return structuredClone(data);
 }
